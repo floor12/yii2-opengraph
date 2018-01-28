@@ -49,7 +49,7 @@ class OpenGraph
             if (sizeof($this->image)) {
                 Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => $this->image[0]], 'og:image');
 
-                if (isset($this->image[1])) {
+                if (isset($this->image[1]) && file_exists($this->image[1])) {
                     list($width, $height) = getimagesize($this->image[1]);
                     Yii::$app->controller->view->registerMetaTag(['property' => 'og:image:width', 'content' => $width], 'og:image:width');
                     Yii::$app->controller->view->registerMetaTag(['property' => 'og:image:height', 'content' => $height], 'og:image:height');
