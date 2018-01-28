@@ -47,7 +47,7 @@ class OpenGraph
 
             // Only add an image meta if specified
             if (sizeof($this->image)) {
-                Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => $this->image[0]], 'og:image');
+                Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'og:image');
 
                 if (isset($this->image[1]) && file_exists($this->image[1])) {
                     list($width, $height) = getimagesize($this->image[1]);
