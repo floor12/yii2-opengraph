@@ -46,8 +46,15 @@ class OpenGraph
             }
 
             // Only add an image meta if specified
-            if ($this->image !== null) {
-                Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => $this->image], 'og:image');
+            if (sizeof($this->image)) {
+                Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => $this->image[0]], 'og:image');
+
+                if (isset($this->image[1])) {
+                    list($width, $height) = getimagesize($this->image[1]);
+                    Yii::$app->controller->view->registerMetaTag(['property' => 'og:image:width', 'content' => $width], 'og:image:width');
+                    Yii::$app->controller->view->registerMetaTag(['property' => 'og:image:height', 'content' => $height], 'og:image:height');
+
+                }
             }
 
             $this->twitter->registerTags();
