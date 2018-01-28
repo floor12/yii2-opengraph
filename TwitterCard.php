@@ -1,5 +1,5 @@
 <?php
-namespace dragonjet\opengraph;
+namespace floor12\opengraph;
 use Yii;
 
 class TwitterCard {
