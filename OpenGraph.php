@@ -20,7 +20,7 @@ class OpenGraph
         // Load default values
         $this->title = Yii::$app->name;
         $this->site_name = Yii::$app->name;
-        $this->url = Yii::$app->request->absoluteUrl;
+        $this->url = str_replace("http://", "https://", Yii::$app->request->absoluteUrl);
         $this->description = null;
         $this->type = 'article';
         $this->locale = str_replace('-', '_', Yii::$app->language);
@@ -28,11 +28,13 @@ class OpenGraph
 
         // Twitter Card
         $this->twitter = new TwitterCard;
+        $this->twitter->title = $this->title;
 
         // Listed to Begin Page View event to start adding meta
         Yii::$app->view->on(View::EVENT_BEGIN_PAGE, function () {
             // Register required and easily determined open graph data
             Yii::$app->controller->view->registerMetaTag(['property' => 'og:title', 'content' => $this->title], 'og:title');
+            Yii::$app->controller->view->registerMetaTag(['itemprop' => 'name', 'content' => $this->title], 'itemprop-title');
             Yii::$app->controller->view->registerMetaTag(['property' => 'og:site_name', 'content' => $this->site_name], 'og:site_name');
             Yii::$app->controller->view->registerMetaTag(['property' => 'og:url', 'content' => $this->url], 'og:url');
             Yii::$app->controller->view->registerMetaTag(['property' => 'og:type', 'content' => $this->type], 'og:type');
@@ -43,11 +45,14 @@ class OpenGraph
             // Only add a description meta if specified
             if ($this->description !== null) {
                 Yii::$app->controller->view->registerMetaTag(['property' => 'og:description', 'content' => $this->description], 'og:description');
+                Yii::$app->controller->view->registerMetaTag(['itemprop' => 'description', 'content' => $this->description], 'itemprop-description');
             }
 
             // Only add an image meta if specified
             if (sizeof($this->image)) {
                 Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'og:image');
+                Yii::$app->controller->view->registerMetaTag(['property' => 'twitter:image:src', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'twitter:image');
+                Yii::$app->controller->view->registerMetaTag(['itemprop' => 'image', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'itemprop-image');
 
                 if (isset($this->image[1]) && file_exists($this->image[1])) {
                     list($width, $height) = getimagesize($this->image[1]);
