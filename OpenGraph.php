@@ -49,7 +49,7 @@ class OpenGraph
             }
 
             // Only add an image meta if specified
-            if (sizeof($this->image)) {
+            if (!empty($this->image)) {
                 Yii::$app->controller->view->registerMetaTag(['property' => 'og:image', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'og:image');
                 Yii::$app->controller->view->registerMetaTag(['property' => 'twitter:image:src', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'twitter:image');
                 Yii::$app->controller->view->registerMetaTag(['itemprop' => 'image', 'content' => Yii::$app->request->hostInfo . $this->image[0]], 'itemprop-image');
